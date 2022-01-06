@@ -3,6 +3,7 @@ var express = require("express");
 var path = require("path");
 var cookieParser = require("cookie-parser");
 var logger = require("morgan");
+require("dotenv").config();
 
 var indexRouter = require("./routes/index");
 var usersRouter = require("./routes/users");
@@ -10,6 +11,21 @@ var usersRouter = require("./routes/users");
 var app = express();
 var cors = require("cors");
 app.use(cors());
+
+const mongoose = require("mongoose");
+const { DB_HOST, DB_PORT, DB_NAME } = process.env;
+const mongoUrl = `mongodb://${DB_HOST}:${DB_PORT}/${DB_NAME}`;
+const mongoConfig = { useUnifiedToPology: true, useNewUrlParser: true };
+
+mongoose
+  .connect(mongoUrl, mongoConfig)
+  .then(() => {
+    console.log(`${mongoUrl} IS CONNECTED !!`);
+  })
+  .catch((err) => {
+    console.error(err);
+    console.log(`DB CONNECT FAIL !!`);
+  });
 
 // view engine setup
 app.set("views", path.join(__dirname, "views"));
