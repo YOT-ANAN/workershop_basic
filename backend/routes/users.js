@@ -4,6 +4,7 @@ const bcrypt = require("bcrypt");
 var UserModel = require("../models/user");
 var router = express.Router();
 const jwt = require("jsonwebtoken");
+const jwt_decode = require("../middlewares/jwt_decode");
 
 // create
 router.post("/", async function (req, res) {
@@ -59,7 +60,7 @@ router.get("/:id", async function (req, res) {
 });
 
 //  put
-router.put("/:id", async function (req, res) {
+router.put("/:id", jwt_decode, async function (req, res) {
   try {
     const { id } = req.params;
     const payload = req.body;
@@ -106,8 +107,8 @@ router.delete("/:id", async function (req, res) {
 //  login
 router.post("/auth/login", async function (req, res) {
   try {
+    
     const { username, password } = req.body;
-
     const result = await UserModel.findOne({ username });
 
     if (!result) {
@@ -117,6 +118,7 @@ router.post("/auth/login", async function (req, res) {
     }
 
     const check = await bcrypt.compare(password, result.password);
+
     const token = await jwt.sign(
       { _id: result._id, username },
       process.env.JWT_SECRET
@@ -133,6 +135,7 @@ router.post("/auth/login", async function (req, res) {
       token: token,
       message: "authentication success",
     });
+
   } catch (error) {
     res.status(500).send({
       message: error.message,
