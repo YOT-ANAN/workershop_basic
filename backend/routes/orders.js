@@ -5,7 +5,7 @@ var ProductModel = require("../models/product");
 var router = express.Router();
 const jwt_decode = require("../middlewares/jwt_decode");
 
-const updateProductAmount = (item, count) => {
+const updateProductAmount = (item) => {
   return new Promise(async (resolve, reject) => {
     try {
       const obj = await ProductModel.findById(item.product._id);
