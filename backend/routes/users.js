@@ -3,6 +3,7 @@ const mongoose = require("mongoose");
 const bcrypt = require("bcrypt");
 var UserModel = require("../models/user");
 var router = express.Router();
+const jwt = require("jsonwebtoken");
 
 // create
 router.post("/", async function (req, res) {
@@ -11,11 +12,11 @@ router.post("/", async function (req, res) {
     const hash_password = await bcrypt.hash(body.password, 10);
     const obj = new UserModel({ ...body, password: hash_password });
     await obj.save();
-    res.status(201).send({
+    return res.status(201).send({
       message: "create user success",
     });
   } catch (error) {
-    res.status(500).send({
+    return res.status(201).send({
       message: error.message,
     });
   }
@@ -25,12 +26,12 @@ router.post("/", async function (req, res) {
 router.get("/", async function (req, res) {
   try {
     const result = await UserModel.find({});
-    res.status(200).send({
+    return res.status(200).send({
       data: result,
       message: "find all users",
     });
   } catch (error) {
-    res.status(500).send({
+    return res.status(500).send({
       message: error.message,
     });
   }
@@ -41,17 +42,17 @@ router.get("/:id", async function (req, res) {
   try {
     const { id } = req.params;
     if (!mongoose.Types.ObjectId.isValid(id)) {
-      res.status(400).send({
+      return res.status(400).send({
         message: "id Invalid",
       });
     }
     const result = await UserModel.findById(id);
-    res.status(200).send({
+    return res.status(200).send({
       data: result,
       message: "find by id user",
     });
   } catch (error) {
-    res.status(500).send({
+    return res.status(500).send({
       message: error.message,
     });
   }
@@ -63,7 +64,7 @@ router.put("/:id", async function (req, res) {
     const { id } = req.params;
     const payload = req.body;
     if (!mongoose.Types.ObjectId.isValid(id)) {
-      res.status(400).send({
+      return res.status(400).send({
         message: "id Invalid",
       });
     }
@@ -72,14 +73,11 @@ router.put("/:id", async function (req, res) {
       { $set: payload }
     );
     const result = await UserModel.findById(id);
-    res.status(200).send({
-      data: result,
-    });
-    res.status(200).send({
+    return res.status(200).send({
       data: result,
     });
   } catch (error) {
-    res.status(500).send({
+    return res.status(500).send({
       message: error.message,
     });
   }
@@ -90,13 +88,50 @@ router.delete("/:id", async function (req, res) {
   try {
     const { id } = req.params;
     if (!mongoose.Types.ObjectId.isValid(id)) {
-      res.status(400).send({
+      return res.status(400).send({
         message: "id Invalid",
       });
     }
     await UserModel.deleteOne({ _id: mongoose.Types.ObjectId(id) });
-    res.status(200).send({
+    return res.status(200).send({
       message: "delete user success",
+    });
+  } catch (error) {
+    return res.status(500).send({
+      message: error.message,
+    });
+  }
+});
+
+//  login
+router.post("/auth/login", async function (req, res) {
+  try {
+    const { username, password } = req.body;
+
+    const result = await UserModel.findOne({ username });
+
+    if (!result) {
+      return res.status(401).send({
+        message: "username not found",
+      });
+    }
+
+    const check = await bcrypt.compare(password, result.password);
+    const token = await jwt.sign(
+      { _id: result._id, username },
+      process.env.JWT_SECRET
+    );
+
+    if (!check) {
+      return res.status(401).send({
+        message: "password  is invalid",
+      });
+    }
+
+    res.status(200).send({
+      data: result,
+      token: token,
+      message: "authentication success",
     });
   } catch (error) {
     res.status(500).send({
