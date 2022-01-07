@@ -25,16 +25,19 @@ const updateProductAmount = (item) => {
 router.post("/", async function (req, res) {
   try {
     const body = req.body;
-    const obj = new OrderModel({ ...body });
+    const total_price = body.product_lists.reduce((prev, curr) => {
+      return (prev += curr.amount);
+    }, 0);
+    const obj = new OrderModel({ ...body, total_price });
     await obj.save();
     for (const product of body.product_lists) {
-      await updateProductAmount(product, count);
+      await updateProductAmount(product);
     }
     return res.status(201).send({
       message: "create order success",
     });
   } catch (error) {
-    return res.status(201).send({
+    return res.status(500).send({
       message: error.message,
     });
   }
