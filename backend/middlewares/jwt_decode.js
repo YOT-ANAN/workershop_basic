@@ -4,7 +4,6 @@ module.exports = (req, res, next) => {
   try {
     const token = req?.headers?.authorization?.split("Bearer ")[1];
     const decode = jwt.verify(token, process.env.JWT_SECRET);
-    console.log(decode);
     req.auth = decode;
     return next();
   } catch (error) {
