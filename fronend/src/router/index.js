@@ -26,8 +26,13 @@ const routes = [
       },
       {
         path: '/login',
-        component: () =>
-          import(/* webpackChunkName: "about" */ '../views/Login.vue')
+        name: 'login',
+        component: () => import('../views/Login.vue')
+      },
+      {
+        path: '/grade-calculator',
+        name: 'GradeCalulator',
+        component: () => import('../views/GradeCalculator.vue')
       }
     ]
   }
