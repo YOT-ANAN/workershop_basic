@@ -9,8 +9,12 @@
       <v-row>
         <v-col cols="4" v-for="(data, index) in apidata" :key="index">
           <v-card class="mx-auto" max-width="344">
-            <v-img
+            <!-- <v-img
               src="https://riahsoftware.com/wp-content/uploads/2019/06/System-Programmer.jpg"
+              height="200px"
+            ></v-img> -->
+            <v-img
+              src="https://picsum.photos/500"
               height="200px"
             ></v-img>
 

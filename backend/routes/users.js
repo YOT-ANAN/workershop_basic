@@ -71,7 +71,7 @@ router.put("/:id", async function (req, res) {
     }
 
     if (payload.password) {
-      const hash_password = await bcrypt.hash(payload.password, 10);
+      const hash_password = await bcrypt.hash(payload.password , 10);
       payload.password = hash_password;
     }
 
