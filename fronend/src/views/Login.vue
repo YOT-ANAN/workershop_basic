@@ -1,6 +1,5 @@
 <template>
   <div>
-    <h1>{{ data }}</h1>
     <h1 v-if="show">{{ show }}</h1>
     <v-btn color="success" @click="show = !show">switch</v-btn>
     <ul>
@@ -20,6 +19,9 @@
     </v-text-field>
     <v-btn color="success" @click="callSub()"> from main to sub </v-btn>
     <SubLogin :dataprops="username" />
+    <div>
+      {{ $store.state.count }}
+    </div>
   </div>
 </template>
 
@@ -32,7 +34,7 @@ export default {
   },
   data() {
     return {
-      data: 'Hello From Login',
+      datas: [],
       show: false,
       username: '',
       items: [
@@ -41,7 +43,12 @@ export default {
       ]
     }
   },
+  async created() {
+    await this.getData()
+    console.log('created')
+  },
   mounted() {
+    console.log('mounted')
     EventBus.$on('maindisplay', this.mainDisplay)
   },
   methods: {
@@ -53,6 +60,15 @@ export default {
     },
     callSub() {
       EventBus.$emit('subdisplay', this.username)
+    },
+    async getData() {
+      try {
+        const { data } = await this.axios.get('https://localhost:3000/product')
+        console.log(data)
+        this.datas = data
+      } catch (error) {
+        console.log(error.message)
+      }
     }
   }
 }

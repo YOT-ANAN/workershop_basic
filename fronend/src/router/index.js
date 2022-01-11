@@ -33,6 +33,11 @@ const routes = [
         path: '/grade-calculator',
         name: 'GradeCalulator',
         component: () => import('../views/GradeCalculator.vue')
+      },
+      {
+        path: '/api-con',
+        name: 'ApiCon',
+        component: () => import('../views/Apicon.vue')
       }
     ]
   }

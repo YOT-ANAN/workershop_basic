@@ -4,7 +4,6 @@
     <v-btn color="success" @click="callmain()"> from sub to main </v-btn>
   </div>
 </template>
-
 <script>
 import { EventBus } from '@/EventBus'
 export default {
