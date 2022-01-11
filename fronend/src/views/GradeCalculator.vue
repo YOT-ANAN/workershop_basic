@@ -11,7 +11,9 @@
           v-model.number="score"
           outlined
         ></v-text-field>
-        <v-btn @click="calculate(score)" color="success"> คำนวณ </v-btn>
+        <div class="d-flex justify-end">
+          <v-btn @click="calculate(score)" color="success"> คำนวณ </v-btn>
+        </div>
       </v-card>
     </v-container>
   </div>
