@@ -18,12 +18,14 @@
       v-model="username"
     >
     </v-text-field>
+    <v-btn color="success" @click="callSub()"> from main to sub </v-btn>
     <SubLogin :dataprops="username" />
   </div>
 </template>
 
 <script>
 import SubLogin from './SubLogin.vue'
+import { EventBus } from '@/EventBus'
 export default {
   components: {
     SubLogin
@@ -39,9 +41,18 @@ export default {
       ]
     }
   },
+  mounted() {
+    EventBus.$on('maindisplay', this.mainDisplay)
+  },
   methods: {
     display(message) {
       alert('Hello from ' + message)
+    },
+    mainDisplay() {
+      alert('Hello from main')
+    },
+    callSub() {
+      EventBus.$emit('subdisplay', this.username)
     }
   }
 }

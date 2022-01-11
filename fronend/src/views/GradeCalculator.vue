@@ -31,10 +31,12 @@ export default {
     calculate(score) {
       if (typeof score !== 'number') {
         alert('กรุณาใส่คะแนนเป็นตัวเลข')
-        return
+        this.score = 0
       }
-      if (score < 0) alert('ข้อมูลกรุณาใส่ข้อมูลในช่วง 0 - 100')
-      else if (score <= 49) {
+      if (score < 0) {
+        alert('ข้อมูลกรุณาใส่ข้อมูลในช่วง 0 - 100')
+        this.score = 0
+      } else if (score <= 49) {
         this.grade = 'F'
         alert('คุณได้เกรด ' + this.grade)
       } else if (score <= 59) {
@@ -51,6 +53,7 @@ export default {
         alert('คุณได้เกรด ' + this.grade)
       } else if (score > 100) {
         alert('ข้อมูลกรุณาใส่ข้อมูลในช่วง 0 - 100')
+        this.score = 0
       }
     }
   }
