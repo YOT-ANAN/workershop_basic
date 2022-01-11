@@ -13,10 +13,7 @@
               src="https://riahsoftware.com/wp-content/uploads/2019/06/System-Programmer.jpg"
               height="200px"
             ></v-img> -->
-            <v-img
-              src="https://picsum.photos/500"
-              height="200px"
-            ></v-img>
+            <v-img src="https://picsum.photos/500" height="200px"></v-img>
 
             <v-card-title>
               Name: {{ `${data.firstname} ${data.lastname}` }}
