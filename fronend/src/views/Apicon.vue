@@ -2,8 +2,8 @@
   <div>
     <v-container>
       <div class="ma-4">
-        <v-btn large outlined color="info" @click="newItem()">NewItem</v-btn>
-        <v-btn color="success" @click="getData">Get</v-btn>
+        <v-btn large outlined color="info" @click="newItem()">ADD</v-btn>
+        <!-- <v-btn color="success" @click="getData">Get</v-btn> -->
       </div>
 
       <v-row>
@@ -23,8 +23,14 @@
               Age : {{ data.age }} <br />
               <br />
 
-              <v-btn outlined color="info" @click="editmode(data)">edit</v-btn>
-              <v-btn outlined color="error" @click="deletemode(data)"
+              <v-btn outlined color="info" class="mx-1" @click="editmode(data)"
+                >edit</v-btn
+              >
+              <v-btn
+                outlined
+                color="error"
+                class="mx-1"
+                @click="deletemode(data)"
                 >delete</v-btn
               >
             </v-card-subtitle>
@@ -183,7 +189,7 @@ export default {
           'http://localhost:3000/users',
           this.postdata
         )
-        alert(data.massage)
+        alert(data.message)
         this.getData()
         this.postdata = Object.assign({}, this.postdefault)
         this.dialogedit = false
@@ -197,7 +203,7 @@ export default {
           'http://localhost:3000/users/' + this.id,
           this.postdata
         )
-        alert(data.massage)
+        alert(data.message)
         this.getData()
         this.postdata = Object.assign({}, this.postdefault)
         this.dialogedit = false
@@ -210,7 +216,7 @@ export default {
         var { data } = await this.axios.delete(
           'http://localhost:3000/users/' + this.id
         )
-        alert(data.massage)
+        alert(data.message)
         this.getData()
         this.id = ''
         this.dialogDelete = false

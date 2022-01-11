@@ -60,7 +60,7 @@ router.get("/:id", async function (req, res) {
 });
 
 //  put
-router.put("/:id", jwt_decode, async function (req, res) {
+router.put("/:id", async function (req, res) {
   try {
     const { id } = req.params;
     const payload = req.body;
@@ -69,6 +69,12 @@ router.put("/:id", jwt_decode, async function (req, res) {
         message: "id Invalid",
       });
     }
+
+    if (payload.password) {
+      const hash_password = await bcrypt.hash(payload.password, 10);
+      payload.password = hash_password;
+    }
+
     await UserModel.updateOne(
       { _id: mongoose.Types.ObjectId(id) },
       { $set: payload }
@@ -76,6 +82,7 @@ router.put("/:id", jwt_decode, async function (req, res) {
     const result = await UserModel.findById(id);
     return res.status(200).send({
       data: result,
+      message: "edit user success",
     });
   } catch (error) {
     return res.status(500).send({
@@ -107,7 +114,6 @@ router.delete("/:id", async function (req, res) {
 //  login
 router.post("/auth/login", async function (req, res) {
   try {
-    
     const { username, password } = req.body;
     const result = await UserModel.findOne({ username });
 
@@ -135,7 +141,6 @@ router.post("/auth/login", async function (req, res) {
       token: token,
       message: "authentication success",
     });
-
   } catch (error) {
     res.status(500).send({
       message: error.message,
