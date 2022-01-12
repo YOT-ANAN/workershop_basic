@@ -29,7 +29,7 @@
           </v-card-subtitle>
           <v-card-subtitle>
             <div class="d-flex justify-end">
-              {{ `${selected.price.toLocaleString()} บาท` }}
+              {{ `${selected.price} บาท` }}
             </div>
           </v-card-subtitle>
           <div class="d-flex justify-start px-4">
