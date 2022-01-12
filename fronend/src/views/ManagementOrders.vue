@@ -2,13 +2,34 @@
   <div>
     <v-container>
       <div class="my-4 mx-1">
-        <h3>จัดการรายการสั่งซื้อ</h3>
+        <h3>จัดการผู้ใช้</h3>
       </div>
       <div class="my-4 d-flex justify-end">
         <v-btn medium outlined color="info" @click="newItem()">เพิ่ม</v-btn>
       </div>
-      <v-row>
-        <v-col sm="6" lg="3" v-for="(product, index) in products" :key="index">
+      <div>
+        <v-data-table
+          :headers="headers"
+          :items="orders"
+          sort-by="calories"
+          class="elevation-1"
+        >
+          <template>
+            <v-toolbar flat> </v-toolbar>
+          </template>
+
+          <template v-slot:item.actions="{ item }">
+            <v-icon small class="mr-2" @click="editItem(item)">
+              mdi-pencil
+            </v-icon>
+            <v-icon small @click="deleteItem(item)"> mdi-delete </v-icon>
+          </template>
+        </v-data-table>
+      </div>
+      <!-- <v-row>
+        <v-col sm="6" lg="3" v-for="(orders, index) in orders" :key="index">
+          {{ orders.firstname }}
+
           <ProductCard
             :product="product"
             :admin="true"
@@ -16,41 +37,52 @@
             :deleteItem="deleteItem"
           />
         </v-col>
-      </v-row>
+      </v-row> -->
       <!-- create or edit dialog section -->
       <v-dialog v-model="dialog" max-width="500px">
         <v-card>
           <v-card-title>
-            <span>{{ isNewProduct }}</span>
+            <span>{{ isNewData }}</span>
           </v-card-title>
 
           <v-card-text>
             <v-container>
               <v-row>
-                <v-col cols="12">
+                <v-col cols="12" sm="6" md="6">
                   <v-text-field
-                    v-model="postdata.product_name"
-                    label="ชื่อสินค้า"
+                    v-model="postdata.username"
+                    label="ชื่อผู้ใช้"
                   ></v-text-field>
                 </v-col>
-                <v-col cols="12">
+                <v-col cols="12" sm="6" md="6">
                   <v-text-field
-                    v-model="postdata.product_detail.colour"
-                    label="สี"
+                    v-model="postdata.password"
+                    label="รหัสผ่าน"
+                    type="password"
                   ></v-text-field>
                 </v-col>
-                <v-col cols="12" sm="6">
+                <v-col cols="12" sm="6" md="6">
                   <v-text-field
-                    v-model="postdata.price"
-                    label="ราคา"
-                    type="number"
+                    v-model="postdata.firstname"
+                    label="ชื่อ"
                   ></v-text-field>
                 </v-col>
-                <v-col cols="12" sm="6">
+                <v-col cols="12" sm="6" md="6">
                   <v-text-field
-                    v-model="postdata.amount"
-                    label="จำนวน"
-                    type="number"
+                    v-model="postdata.lastname"
+                    label="นามสกุล"
+                  ></v-text-field>
+                </v-col>
+                <v-col cols="12" sm="6" md="6">
+                  <v-text-field
+                    v-model="postdata.gender"
+                    label="เพศ"
+                  ></v-text-field>
+                </v-col>
+                <v-col cols="12" sm="6" md="6">
+                  <v-text-field
+                    v-model="postdata.age"
+                    label="อายุ"
                   ></v-text-field>
                 </v-col>
               </v-row>
@@ -71,7 +103,7 @@
       <!-- delete dialog section -->
       <v-dialog v-model="dialogDelete" max-width="500px">
         <v-card>
-          <v-card-title><span>ยืนยันการลบสินค้า ?</span></v-card-title>
+          <v-card-title><span>ยืนยันการลบผู้ใช้ ?</span></v-card-title>
           <v-card-actions>
             <v-spacer></v-spacer>
             <v-btn color="blue darken-1" text @click="dialogDelete = false"
@@ -88,36 +120,47 @@
   </div>
 </template>
 <script>
-import ProductCard from '../components/ProductCard.vue'
 export default {
-  components: { ProductCard },
   data() {
     return {
-      products: [],
+      orders: [],
+      headers: [
+        {
+          text: 'ชื่อ',
+          value: 'firstname'
+        },
+        {
+          text: 'นามสกุล',
+          value: 'lastname'
+        },
+        { text: 'เพศ', value: 'gender' },
+        { text: 'อายุ', value: 'age' },
+        { text: 'Actions', value: 'actions', sortable: false }
+      ],
       id: '',
       dialog: false,
       dialogDelete: false,
       postdata: {
-        product_name: '',
-        product_detail: {
-          colour: ''
-        },
-        price: 0,
-        amount: 0
+        username: '',
+        password: '',
+        firstname: '',
+        lastname: '',
+        gender: '',
+        age: ''
       },
       postdefault: {
-        product_name: '',
-        product_detail: {
-          colour: ''
-        },
-        price: 0,
-        amount: 0
+        username: '',
+        password: '',
+        firstname: '',
+        lastname: '',
+        gender: '',
+        age: ''
       }
     }
   },
   computed: {
-    isNewProduct() {
-      return this.id === '' ? 'เพิ่มสินค้า' : 'แก้ไขสินค้า'
+    isNewData() {
+      return this.id === '' ? 'เพิ่มผู้ใช้' : 'แก้ไขผู้ใช้'
     }
   },
   created() {
@@ -125,9 +168,9 @@ export default {
   },
   methods: {
     getData() {
-      this.axios.get('http://localhost:3000/products').then((res) => {
+      this.axios.get('http://localhost:3000/orders').then((res) => {
         const { data } = res.data
-        this.products = data
+        this.orders = data
       })
     },
     newItem() {
@@ -145,15 +188,14 @@ export default {
       this.dialogDelete = true
     },
     saveData() {
-      if (this.isNewProduct === 'แก้ไขสินค้า') {
-        alert('แก้ไขสินค้า')
+      if (this.isNewData === 'แก้ไขผู้ใช้') {
         this.putData()
       } else this.postData()
     },
     async postData() {
       try {
         var { data } = await this.axios.post(
-          'http://localhost:3000/products',
+          'http://localhost:3000/orders',
           this.postdata
         )
         alert(data.message)
@@ -167,7 +209,7 @@ export default {
     async putData() {
       try {
         var { data } = await this.axios.put(
-          'http://localhost:3000/products/' + this.id,
+          'http://localhost:3000/orders/' + this.id,
           this.postdata
         )
         alert(data.message)
@@ -181,7 +223,7 @@ export default {
     async delDataOne() {
       try {
         var { data } = await this.axios.delete(
-          'http://localhost:3000/products/' + this.id
+          'http://localhost:3000/orders/' + this.id
         )
         alert(data.message)
         this.getData()

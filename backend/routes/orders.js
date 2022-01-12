@@ -25,10 +25,13 @@ const updateProductAmount = (item) => {
 router.post("/", async function (req, res) {
   try {
     const body = req.body;
-    const total_price = body.product_lists.reduce((prev, curr) => {
+    const total_amount = body.product_lists.reduce((prev, curr) => {
       return (prev += curr.amount);
     }, 0);
-    const obj = new OrderModel({ ...body, total_price });
+    const total_price = body.product_lists.reduce((prev, curr) => {
+      return (prev = prev + curr.amount * curr.product.price);
+    }, 0);
+    const obj = new OrderModel({ ...body, total_amount, total_price });
     await obj.save();
     for (const product of body.product_lists) {
       await updateProductAmount(product);
