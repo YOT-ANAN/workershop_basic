@@ -1,13 +1,29 @@
 <template>
   <div>
     <v-card class="mx-auto" max-width="344">
-      <v-img src="https://picsum.photos/500" height="200px"></v-img>
+      <!-- <router-link
+        style="text-decoration: none; color: inherit"
+        :to="`/product/${product._id}`"
+      > -->
+      <div style="cursor: pointer" v-show="!admin" @click="detailItem(product)">
+        <v-img src="https://picsum.photos/500" height="200px"></v-img>
+        <v-card-title>
+          <div>
+            {{ product.product_name }}
+          </div>
+        </v-card-title>
+      </div>
 
-      <v-card-title>
-        <div>
-          {{ product.product_name }}
-        </div>
-      </v-card-title>
+      <div v-show="admin">
+        <v-img src="https://picsum.photos/500" height="200px"></v-img>
+        <v-card-title>
+          <div>
+            {{ product.product_name }}
+          </div>
+        </v-card-title>
+      </div>
+
+      <!-- </router-link> -->
 
       <v-card-subtitle>
         <div class="d-flex justify-end">
@@ -35,7 +51,7 @@
 
 <script>
 export default {
-  props: ['product', 'admin', 'editItem', 'deleteItem']
+  props: ['product', 'admin', 'editItem', 'deleteItem', 'detailItem']
 }
 </script>
 
