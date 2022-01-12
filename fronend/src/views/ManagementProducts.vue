@@ -146,7 +146,6 @@ export default {
     },
     saveData() {
       if (this.isNewProduct === 'แก้ไขสินค้า') {
-        alert('แก้ไขสินค้า')
         this.putData()
       } else this.postData()
     },

@@ -16,7 +16,7 @@
       </v-row>
       <!-- product detail section -->
       <v-dialog v-model="dialog" max-width="500px">
-        <v-card class="pa-2">
+        <v-card v-if="selected" class="pa-2">
           <v-card-title><span>รายละเอียดสินค้า</span></v-card-title>
           <v-img src="https://picsum.photos/500" height="200px"></v-img>
           <v-card-title>
@@ -29,7 +29,7 @@
           </v-card-subtitle>
           <v-card-subtitle>
             <div class="d-flex justify-end">
-              {{ `${selected.price} บาท` }}
+              {{ `${selected.price ? selected.price.toLocaleString() : selected.price} บาท` }}
             </div>
           </v-card-subtitle>
           <div class="d-flex justify-start px-4">
@@ -82,7 +82,7 @@ export default {
       cart: {
         product_lists: []
       },
-      selected: {}
+      selected: null
     }
   },
   created() {
@@ -121,7 +121,11 @@ export default {
       this.dialog = true
     },
     showCart() {
-      this.dialogCart = true
+      if (this.cart.product_lists.length) {
+        this.dialogCart = true
+      } else {
+        alert('กรุณาเลือกสินค้าอย่างน้อย 1 รายการลงตระกร้า')
+      }
     },
     async confirmOrder() {
       try {

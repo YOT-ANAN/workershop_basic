@@ -37,7 +37,7 @@ router.post("/", async function (req, res) {
       await updateProductAmount(product);
     }
     return res.status(201).send({
-      message: "สร้างรายการสั่งซืื้อสินค้าสำเร็จ",
+      message: "สร้างรายการสั่งซื้อสินค้าสำเร็จ",
     });
   } catch (error) {
     return res.status(500).send({
