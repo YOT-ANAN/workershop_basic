@@ -20,7 +20,7 @@ router.post("/", async function (req, res) {
     const obj = new ProductModel({ ...body, product_code });
     await obj.save();
     return res.status(201).send({
-      message: "create product success",
+      message: "สร้างสินค้าสำเร็จ",
     });
   } catch (error) {
     return res.status(201).send({
@@ -66,7 +66,7 @@ router.get("/:id", async function (req, res) {
 });
 
 // put
-router.put("/:id", jwt_decode, async function (req, res) {
+router.put("/:id", async function (req, res) {
   try {
     const { id } = req.params;
     const payload = req.body;
@@ -82,6 +82,7 @@ router.put("/:id", jwt_decode, async function (req, res) {
     const result = await ProductModel.findById(id);
     return res.status(200).send({
       data: result,
+      message: "แก้ไขสินค้าสำเร็จ",
     });
   } catch (error) {
     return res.status(500).send({

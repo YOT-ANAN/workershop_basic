@@ -9,7 +9,7 @@
       </div>
       <v-row>
         <v-col sm="6" lg="3" v-for="(product, index) in products" :key="index">
-          <ProductCard :product="product" :admin="true" />
+          <ProductCard :product="product" :admin="true" :editItem="editItem" />
         </v-col>
       </v-row>
       <v-dialog v-model="dialog" max-width="500px">
@@ -113,8 +113,15 @@ export default {
       this.postdata = Object.assign({}, this.postdefault)
       this.dialog = true
     },
+    editItem(item) {
+      this.id = item._id
+      this.postdata = Object.assign({}, item)
+      this.dialog = true
+    },
     saveData() {
-      if (this.savemode === 'Edit Item') {
+      console.log(this.isNewProduct)
+      if (this.isNewProduct === 'แก้ไขสินค้า') {
+        alert('แก้ไขสินค้า')
         this.putData()
       } else this.postData()
     },
@@ -135,7 +142,7 @@ export default {
     async putData() {
       try {
         var { data } = await this.axios.put(
-          'http://localhost:3000/products' + this.id,
+          'http://localhost:3000/products/' + this.id,
           this.postdata
         )
         alert(data.message)

@@ -13,10 +13,17 @@
         <div class="d-flex justify-end">
           {{ `${product.price.toLocaleString()} บาท` }}
         </div>
-        <div v-if="admin" class="d-flex justify-start ">
-          ยอดคงเหลือ
-          <p class="px-2">{{ product.amount }}</p>
-          ชิ้น
+        <div v-if="admin">
+          <div class="d-flex justify-start">
+            ยอดคงเหลือ
+            <p class="px-2">{{ product.amount }}</p>
+            ชิ้น
+          </div>
+          <div>
+            <v-btn outlined color="warning" small @click="editItem(product)">
+              แก้ไขสินค้า
+            </v-btn>
+          </div>
         </div>
       </v-card-subtitle>
     </v-card>
@@ -25,7 +32,7 @@
 
 <script>
 export default {
-  props: ['product', 'admin']
+  props: ['product', 'admin', 'editItem']
 }
 </script>
 
