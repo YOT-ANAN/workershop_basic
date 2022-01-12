@@ -15,7 +15,7 @@
       <v-dialog v-model="dialog" max-width="500px">
         <v-card>
           <v-card-title>
-            <span >{{ isNewProduct }}</span>
+            <span>{{ isNewProduct }}</span>
           </v-card-title>
 
           <v-card-text>
@@ -27,35 +27,24 @@
                     label="ชื่อสินค้า"
                   ></v-text-field>
                 </v-col>
-                <v-col cols="12" sm="6" md="6">
+                <v-col cols="12">
                   <v-text-field
-                    v-model="postdata.password"
-                    label="password"
-                    type="password"
+                    v-model="postdata.product_detail.colour"
+                    label="สี"
                   ></v-text-field>
                 </v-col>
-                <v-col cols="12" sm="6" md="6">
+                <v-col cols="12" sm="6">
                   <v-text-field
-                    v-model="postdata.firstname"
-                    label="firstname"
+                    v-model="postdata.price"
+                    label="ราคา"
+                    type="number"
                   ></v-text-field>
                 </v-col>
-                <v-col cols="12" sm="6" md="6">
+                <v-col cols="12" sm="6">
                   <v-text-field
-                    v-model="postdata.lastname"
-                    label="lastname"
-                  ></v-text-field>
-                </v-col>
-                <v-col cols="12" sm="6" md="6">
-                  <v-text-field
-                    v-model="postdata.gender"
-                    label="gender"
-                  ></v-text-field>
-                </v-col>
-                <v-col cols="12" sm="6" md="6">
-                  <v-text-field
-                    v-model="postdata.age"
-                    label="age"
+                    v-model="postdata.amount"
+                    label="จำนวน"
+                    type="number"
                   ></v-text-field>
                 </v-col>
               </v-row>
@@ -67,7 +56,9 @@
             <v-btn color="blue darken-1" text @click="dialog = false"
               >ยกเลิก</v-btn
             >
-            <v-btn color="blue darken-1" text @click="savedata()">บันทึก</v-btn>
+            <v-btn color="green darken-1" text @click="saveData()"
+              >บันทึก</v-btn
+            >
           </v-card-actions>
         </v-card>
       </v-dialog>
@@ -85,10 +76,20 @@ export default {
       dialog: false,
       dialogDelete: false,
       postdata: {
-        product_name: ''
+        product_name: '',
+        product_detail: {
+          colour: ''
+        },
+        price: 0,
+        amount: 0
       },
       postdefault: {
-        product_name: ''
+        product_name: '',
+        product_detail: {
+          colour: ''
+        },
+        price: 0,
+        amount: 0
       }
     }
   },
@@ -111,6 +112,39 @@ export default {
       this.id = ''
       this.postdata = Object.assign({}, this.postdefault)
       this.dialog = true
+    },
+    saveData() {
+      if (this.savemode === 'Edit Item') {
+        this.putData()
+      } else this.postData()
+    },
+    async postData() {
+      try {
+        var { data } = await this.axios.post(
+          'http://localhost:3000/products',
+          this.postdata
+        )
+        alert(data.message)
+        this.getData()
+        this.postdata = Object.assign({}, this.postdefault)
+        this.dialoge = false
+      } catch (error) {
+        console.log(error.message)
+      }
+    },
+    async putData() {
+      try {
+        var { data } = await this.axios.put(
+          'http://localhost:3000/products' + this.id,
+          this.postdata
+        )
+        alert(data.message)
+        this.getData()
+        this.postdata = Object.assign({}, this.postdefault)
+        this.dialog = false
+      } catch (error) {
+        console.log(error.message)
+      }
     }
   }
 }
