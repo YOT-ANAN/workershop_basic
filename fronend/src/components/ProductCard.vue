@@ -19,9 +19,12 @@
             <p class="px-2">{{ product.amount }}</p>
             ชิ้น
           </div>
-          <div>
-            <v-btn outlined color="warning" small @click="editItem(product)">
+          <div class="d-flex justify-space-between">
+            <v-btn color="warning" small @click="editItem(product)">
               แก้ไขสินค้า
+            </v-btn>
+            <v-btn outlined color="error" small @click="deleteItem(product)">
+              ลบ
             </v-btn>
           </div>
         </div>
@@ -32,7 +35,7 @@
 
 <script>
 export default {
-  props: ['product', 'admin', 'editItem']
+  props: ['product', 'admin', 'editItem', 'deleteItem']
 }
 </script>
 

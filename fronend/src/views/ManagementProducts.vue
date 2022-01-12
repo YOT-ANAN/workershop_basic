@@ -9,9 +9,15 @@
       </div>
       <v-row>
         <v-col sm="6" lg="3" v-for="(product, index) in products" :key="index">
-          <ProductCard :product="product" :admin="true" :editItem="editItem" />
+          <ProductCard
+            :product="product"
+            :admin="true"
+            :editItem="editItem"
+            :deleteItem="deleteItem"
+          />
         </v-col>
       </v-row>
+      <!-- create or edit dialog section -->
       <v-dialog v-model="dialog" max-width="500px">
         <v-card>
           <v-card-title>
@@ -59,6 +65,22 @@
             <v-btn color="green darken-1" text @click="saveData()"
               >บันทึก</v-btn
             >
+          </v-card-actions>
+        </v-card>
+      </v-dialog>
+      <!-- delete dialog section -->
+      <v-dialog v-model="dialogDelete" max-width="500px">
+        <v-card>
+          <v-card-title><span>ยืนยันการลบสินค้า ?</span></v-card-title>
+          <v-card-actions>
+            <v-spacer></v-spacer>
+            <v-btn color="blue darken-1" text @click="dialogDelete = false"
+              >ยกเลิก</v-btn
+            >
+            <v-btn color="error darken-1" text @click="delDataOne()"
+              >ยืนยัน</v-btn
+            >
+            <v-spacer></v-spacer>
           </v-card-actions>
         </v-card>
       </v-dialog>
@@ -118,8 +140,11 @@ export default {
       this.postdata = Object.assign({}, item)
       this.dialog = true
     },
+    deleteItem(item) {
+      this.id = item._id
+      this.dialogDelete = true
+    },
     saveData() {
-      console.log(this.isNewProduct)
       if (this.isNewProduct === 'แก้ไขสินค้า') {
         alert('แก้ไขสินค้า')
         this.putData()
@@ -134,7 +159,7 @@ export default {
         alert(data.message)
         this.getData()
         this.postdata = Object.assign({}, this.postdefault)
-        this.dialoge = false
+        this.dialog = false
       } catch (error) {
         console.log(error.message)
       }
@@ -149,6 +174,19 @@ export default {
         this.getData()
         this.postdata = Object.assign({}, this.postdefault)
         this.dialog = false
+      } catch (error) {
+        console.log(error.message)
+      }
+    },
+    async delDataOne() {
+      try {
+        var { data } = await this.axios.delete(
+          'http://localhost:3000/products/' + this.id
+        )
+        alert(data.message)
+        this.getData()
+        this.id = ''
+        this.dialogDelete = false
       } catch (error) {
         console.log(error.message)
       }

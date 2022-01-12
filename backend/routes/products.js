@@ -102,7 +102,7 @@ router.delete("/:id", async function (req, res) {
     }
     await ProductModel.deleteOne({ _id: mongoose.Types.ObjectId(id) });
     return res.status(200).send({
-      message: "delete product success",
+      message: "ลบสินค้าสำเร็จ",
     });
   } catch (error) {
     return res.status(500).send({
