@@ -5,5 +5,6 @@ module.exports = {
   semi: false,
   singleQuote: true,
   vueIndentScriptAndStyle: true,
-  insertSpaceBeforeFunctionParenthesis: true
+  insertSpaceBeforeFunctionParenthesis: true,
+  endOfLine: 'auto'
 }

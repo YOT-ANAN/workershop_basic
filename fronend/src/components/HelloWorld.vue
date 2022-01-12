@@ -20,7 +20,12 @@
             >Discord Community</a
           >
         </p>
-        <router-link to="/grade-calculator">คำนวณผลการเรียน</router-link>
+        <div>
+          <router-link to="/grade-calculator">คำนวณผลการเรียน</router-link>
+        </div>
+        <div>
+          <router-link to="/products">รายการสินค้า</router-link>
+        </div>
       </v-col>
 
       <v-col class="mb-5" cols="12">
