@@ -15,12 +15,12 @@
             <v-toolbar flat> </v-toolbar>
           </template>
 
-          <template v-slot:item.createdAt="{ item }">
+          <template v-slot:[`item.createdAt`]="{ item }">
             <div>
               {{ new Date(item.createdAt).toLocaleDateString('th') }}
             </div>
           </template>
-          <template v-slot:item.product_lists="{ item }">
+          <template v-slot:[`item.product_lists`]="{ item }">
             <div
               class="my-2"
               v-for="(product, index) in item.product_lists"
@@ -29,10 +29,10 @@
               {{ product.product.product_name }} x {{ product.amount }} ชิ้น
             </div>
           </template>
-          <template v-slot:item.total_amount="{ item }">
+          <template v-slot:[`item.total_amount`]="{ item }">
             <div>{{ item.total_amount.toLocaleString() }} ชิ้น</div>
           </template>
-          <template v-slot:item.total_price="{ item }">
+          <template v-slot:[`item.total_price`]="{ item }">
             <div>{{ item.total_price.toLocaleString() }} บาท</div>
           </template>
         </v-data-table>
