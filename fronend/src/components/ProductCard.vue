@@ -22,9 +22,7 @@
           </div>
         </v-card-title>
       </div>
-
       <!-- </router-link> -->
-
       <v-card-subtitle>
         <div class="d-flex justify-end">
           {{ `${product.price.toLocaleString()} บาท` }}

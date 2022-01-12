@@ -30,8 +30,11 @@
       <router-link to="/management/products">
         <v-btn text>จัดการสินค้า</v-btn>
       </router-link>
-      <router-link to="/management/products">
+      <router-link to="/management/orders">
         <v-btn text>รายการสั่งซื้อ</v-btn>
+      </router-link>
+      <router-link to="/management/users">
+        <v-btn text>จัดการผู้ใช้</v-btn>
       </router-link>
       <!-- <v-btn
         href="https://github.com/vuetifyjs/vuetify/releases/latest"
