@@ -50,6 +50,13 @@
                   }}
                 </div>
               </v-card-subtitle>
+              <div>
+                <v-text-field
+                  v-model="amount"
+                  label="จำนวน"
+                  type="number"
+                ></v-text-field>
+              </div>
               <div class="d-flex justify-start">
                 <v-btn color="error" @click="addToCart(selected)">
                   เพิ่มลงตระกร้า</v-btn
@@ -77,14 +84,31 @@
                     {{ product.amount }}
                   </div>
                   <div>
-                    {{ `฿ ${product.amount * product.product.price}` }}
+                    {{
+                      `฿ ${(
+                        product.amount * product.product.price
+                      ).toLocaleString()}`
+                    }}
+                    <v-btn
+                      small
+                      outlined
+                      color="error"
+                      class="mx-2"
+                      @click="delItemInCart(product.product._id)"
+                    >
+                      ลบ
+                    </v-btn>
                   </div>
                 </div>
               </v-col>
             </v-row>
           </v-card-text>
           <div class="d-flex justify-end px-4">
-            <v-btn  color="success" @click="confirmOrder">
+            <v-btn
+              color="success"
+              :disabled="!cart.product_lists.length"
+              @click="confirmOrder"
+            >
               จ่ายเงิน</v-btn
             >
           </div>
@@ -100,6 +124,7 @@ export default {
   data() {
     return {
       products: [],
+      amount: 1,
       dialog: false,
       dialogCart: false,
       cart: {
@@ -125,11 +150,14 @@ export default {
         (product) => product.product._id === item._id
       )
       if (!isAvaliable) {
-        currentList = [...this.cart.product_lists, { product: item, amount: 1 }]
+        currentList = [
+          ...this.cart.product_lists,
+          { product: item, amount: this.amount }
+        ]
       } else {
         currentList = this.cart.product_lists.map((product) => {
           if (item._id === product.product._id) {
-            return { ...product, amount: product.amount + 1 }
+            return { ...product, amount: product.amount + this.amount }
           }
           return product
         })
@@ -139,6 +167,7 @@ export default {
       this.selected = {}
     },
     detailItem(item) {
+      this.amount = 1
       this.id = ''
       this.selected = Object.assign({}, item)
       this.dialog = true
@@ -149,6 +178,12 @@ export default {
       } else {
         alert('กรุณาเลือกสินค้าอย่างน้อย 1 รายการลงตระกร้า')
       }
+    },
+    delItemInCart(id) {
+      const currentList = this.cart.product_lists.filter((product) => {
+        if (id !== product.product._id) return product
+      })
+      this.cart = { ...this.cart, product_lists: currentList }
     },
     async confirmOrder() {
       try {
