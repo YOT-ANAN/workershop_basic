@@ -49,7 +49,7 @@ router.post("/", async function (req, res) {
 // get all
 router.get("/", async function (req, res) {
   try {
-    const result = await OrderModel.find({});
+    const result = await OrderModel.find({}).sort({ createdAt: -1 });
     return res.status(200).send({
       data: result,
       message: "find all order",
