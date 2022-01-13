@@ -14,29 +14,49 @@
           <ProductCard :product="product" :detailItem="detailItem" />
         </v-col>
       </v-row>
-      <!-- product detail section -->
-      <v-dialog v-model="dialog" max-width="500px">
-        <v-card v-if="selected" class="pa-2">
-          <v-card-title><span>รายละเอียดสินค้า</span></v-card-title>
-          <v-img src="https://picsum.photos/500" height="200px"></v-img>
-          <v-card-title>
-            <div>
-              {{ selected.product_name }}
-            </div>
-          </v-card-title>
-          <v-card-subtitle>
-            <div class="d-flex justify-end"></div>
-          </v-card-subtitle>
-          <v-card-subtitle>
-            <div class="d-flex justify-end">
-              {{ `${selected.price ? selected.price.toLocaleString() : selected.price} บาท` }}
-            </div>
-          </v-card-subtitle>
-          <div class="d-flex justify-start px-4">
-            <v-btn small outlined color="error" @click="addToCart(selected)">
-              เพิ่มลงตระกร้า</v-btn
-            >
-          </div>
+      <!-- product detail dialog section -->
+      <v-dialog v-model="dialog" max-width="800px">
+        <v-card v-if="selected" class="pa-4">
+          <!-- <v-card-title><span>รายละเอียดสินค้า</span></v-card-title> -->
+          <v-row>
+            <v-col sm="6">
+              <v-img src="https://picsum.photos/500" height="500px"></v-img
+            ></v-col>
+            <v-col sm="6" class="pa-10">
+              <div class="text-h6">
+                {{ selected.product_name }}
+              </div>
+
+              <div class="text-caption py-6">
+                <div>COD : {{ selected.product_code }}</div>
+                <div>รายละเอียดสินค้า</div>
+                <ul>
+                  <li
+                    v-for="(detail, index) in selected.product_detail"
+                    :key="index"
+                  >
+                    {{ detail }}
+                  </li>
+                </ul>
+              </div>
+              <v-card-subtitle>
+                <div class="d-flex justify-end text-h6">
+                  {{
+                    `${
+                      selected.price
+                        ? `฿ ${selected.price.toLocaleString()}`
+                        : selected.price
+                    }`
+                  }}
+                </div>
+              </v-card-subtitle>
+              <div class="d-flex justify-start">
+                <v-btn color="error" @click="addToCart(selected)">
+                  เพิ่มลงตระกร้า</v-btn
+                >
+              </div>
+            </v-col>
+          </v-row>
         </v-card>
       </v-dialog>
       <!-- order detail section -->
@@ -53,15 +73,18 @@
               >
                 <div class="d-flex justify-space-between px-2">
                   <div>
-                    {{ `${index + 1} )` }} {{ product.product.product_name }}
+                    {{ `${index + 1} )` }} {{ product.product.product_name }} x
+                    {{ product.amount }}
                   </div>
-                  <div>{{ product.amount }} ชิ้น</div>
+                  <div>
+                    {{ `฿ ${product.amount * product.product.price}` }}
+                  </div>
                 </div>
               </v-col>
             </v-row>
           </v-card-text>
           <div class="d-flex justify-end px-4">
-            <v-btn small outlined color="success" @click="confirmOrder">
+            <v-btn  color="success" @click="confirmOrder">
               จ่ายเงิน</v-btn
             >
           </div>

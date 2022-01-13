@@ -22,6 +22,12 @@
           </div>
         </v-card-title>
       </div>
+
+      <div>
+        <v-card-subtitle>
+          รายละเอียดสินค้า : สี{{ product.product_detail.colour }}
+        </v-card-subtitle>
+      </div>
       <!-- </router-link> -->
       <v-card-subtitle>
         <div class="d-flex justify-end">
