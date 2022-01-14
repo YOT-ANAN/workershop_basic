@@ -103,6 +103,28 @@
               </v-col>
             </v-row>
           </v-card-text>
+          <v-card-title><span>ข้อมูลลูกค้า</span></v-card-title>
+          <div class="px-6">
+            <v-row>
+              <v-col>
+                <v-text-field
+                  v-model="cart.customer.firstname"
+                  label="ชื่อ"
+                ></v-text-field>
+              </v-col>
+              <v-col>
+                <v-text-field
+                  v-model="cart.customer.lastname"
+                  label="นามสกุล"
+                ></v-text-field
+              ></v-col>
+            </v-row>
+
+            <v-text-field
+              v-model="cart.customer.address"
+              label="ที่อยู่"
+            ></v-text-field>
+          </div>
           <div class="d-flex justify-end px-4">
             <v-btn
               color="success"
@@ -128,6 +150,11 @@ export default {
       dialog: false,
       dialogCart: false,
       cart: {
+        customer: {
+          firstname: '',
+          lastname: '',
+          address: ''
+        },
         product_lists: []
       },
       selected: null

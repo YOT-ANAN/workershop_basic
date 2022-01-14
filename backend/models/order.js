@@ -4,6 +4,7 @@ const orders = new mongoose.Schema(
     customer: {
       firstname: { type: String },
       lastname: { type: String },
+      address: { type: String },
     },
     product_lists: [
       {

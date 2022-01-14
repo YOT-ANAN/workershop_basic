@@ -20,6 +20,14 @@
               {{ new Date(item.createdAt).toLocaleDateString('th') }}
             </div>
           </template>
+          <template v-slot:[`item.customer`]="{ item }">
+            <div>
+              {{ item.customer.firstname }} {{ item.customer.lastname }}
+              <div>
+                {{ item.customer.address }}
+              </div>
+            </div>
+          </template>
           <template v-slot:[`item.product_lists`]="{ item }">
             <div
               class="my-2"
@@ -49,6 +57,11 @@ export default {
         {
           text: 'วันที่',
           value: 'createdAt',
+          sortable: false
+        },
+        {
+          text: 'ที่อยู่ลูกค้า',
+          value: 'customer',
           sortable: false
         },
         {

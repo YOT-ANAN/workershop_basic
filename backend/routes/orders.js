@@ -26,7 +26,7 @@ router.post("/", async function (req, res) {
   try {
     const body = req.body;
     const total_amount = body.product_lists.reduce((prev, curr) => {
-      return (prev += curr.amount);
+      return (prev += parseInt(curr.amount));
     }, 0);
     const total_price = body.product_lists.reduce((prev, curr) => {
       return (prev = prev + curr.amount * curr.product.price);

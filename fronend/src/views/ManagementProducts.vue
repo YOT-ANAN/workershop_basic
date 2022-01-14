@@ -1,10 +1,8 @@
 <template>
   <div>
     <v-container>
-      <div class="my-4 mx-1">
+      <div class="d-flex justify-space-between my-4">
         <h3>จัดการรายการสินค้า</h3>
-      </div>
-      <div class="my-4 d-flex justify-end">
         <v-btn medium outlined color="info" @click="newItem()">เพิ่ม</v-btn>
       </div>
       <v-row>
