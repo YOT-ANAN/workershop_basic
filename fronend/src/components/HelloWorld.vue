@@ -26,6 +26,18 @@
         <div>
           <router-link to="/products">รายการสินค้า</router-link>
         </div>
+        <div>
+          <div>learn vue</div>
+          <div>
+            {{ $store.getters.getCount }}
+          </div>
+          <div>
+            <v-btn @click="add">เพิ่ม </v-btn>
+          </div>
+          <div>
+            <v-btn @click="del">ลบ </v-btn>
+          </div>
+        </div>
       </v-col>
 
       <v-col class="mb-5" cols="12">
@@ -82,7 +94,6 @@
 <script>
 export default {
   name: 'HelloWorld',
-
   data: () => ({
     ecosystem: [
       {
@@ -134,6 +145,14 @@ export default {
         href: 'https://vuetifyjs.com/getting-started/frequently-asked-questions'
       }
     ]
-  })
+  }),
+  methods: {
+    add() {
+      this.$store.dispatch('addAction')
+    },
+    del() {
+      this.$store.dispatch('delAction')
+    }
+  }
 }
 </script>
